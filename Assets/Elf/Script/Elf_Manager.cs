@@ -38,7 +38,7 @@ public class Elf_Manager : MonoBehaviour {
 		{
 			ElfChar[i].SetActive(false);
 		}
-		Elf.animation.CrossFade(aniname[iani]);
+		Elf.GetComponent<Animation>().CrossFade(aniname[iani]);
 		ElfChar[0].SetActive(true);
 		Wand[0].SetActive(true);
 		Pet[0].SetActive(true);
@@ -167,7 +167,7 @@ public class Elf_Manager : MonoBehaviour {
 			ElfPet[iPet].SetActive(true);
 		}
 		ElfChar[iElf].SetActive(true);
-		Elf.animation.CrossFade(aniname[iani]);
+		Elf.GetComponent<Animation>().CrossFade(aniname[iani]);
 	}
 	private void nextAni()
 	{
@@ -212,7 +212,7 @@ public class Elf_Manager : MonoBehaviour {
 			ElfPet[iPet].SetActive(true);
 		}
 		ElfChar[iElf].SetActive(true);
-		Elf.animation.CrossFade(aniname[iani]);
+		Elf.GetComponent<Animation>().CrossFade(aniname[iani]);
 	}
 	//Wand
 	private void prevWand()
