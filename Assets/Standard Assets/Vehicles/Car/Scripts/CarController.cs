@@ -1,7 +1,6 @@
-using System;
 using UnityEngine;
 
-namespace UnityStandardAssets.Vehicles.Car
+namespace Standard_Assets.Vehicles.Car.Scripts
 {
     internal enum CarDriveType
     {

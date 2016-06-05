@@ -4,48 +4,41 @@
 //
 //=============================================================================
 
+using Plugins;
 using UnityEngine;
-using System.Collections;
 using UnityEngine.Rendering;
 
-[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
-public class SteamVR_CameraMask : MonoBehaviour
-{
-	static Material material;
-	static Mesh[] hiddenAreaMeshes = new Mesh[] { null, null };
+namespace SteamVR.Scripts {
+	[RequireComponent(typeof (MeshFilter), typeof (MeshRenderer))]
+	public class SteamVR_CameraMask : MonoBehaviour {
+		static Material material;
+		static readonly Mesh[] hiddenAreaMeshes = {null, null};
 
-	MeshFilter meshFilter;
+		MeshFilter meshFilter;
 
-	void Awake()
-	{
-		meshFilter = GetComponent<MeshFilter>();
+		void Awake() {
+			meshFilter = GetComponent<MeshFilter>();
 
-		if (material == null)
-			material = new Material(Shader.Find("Custom/SteamVR_HiddenArea"));
+			if (material == null) { material = new Material(Shader.Find("Custom/SteamVR_HiddenArea")); }
 
-		var mr = GetComponent<MeshRenderer>();
-		mr.material = material;
-		mr.shadowCastingMode = ShadowCastingMode.Off;
-		mr.receiveShadows = false;
+			var mr = GetComponent<MeshRenderer>();
+			mr.material = material;
+			mr.shadowCastingMode = ShadowCastingMode.Off;
+			mr.receiveShadows = false;
 #if !(UNITY_5_3 || UNITY_5_2 || UNITY_5_1 || UNITY_5_0)
 		mr.lightProbeUsage = LightProbeUsage.Off;
 #else
-		mr.useLightProbes = false;
+			mr.useLightProbes = false;
 #endif
-		mr.reflectionProbeUsage = ReflectionProbeUsage.Off;
-	}
+			mr.reflectionProbeUsage = ReflectionProbeUsage.Off;
+		}
 
-	public void Set(SteamVR vr, Valve.VR.EVREye eye)
-	{
-		int i = (int)eye;
-		if (hiddenAreaMeshes[i] == null)
-			hiddenAreaMeshes[i] = SteamVR_Utils.CreateHiddenAreaMesh(vr.hmd.GetHiddenAreaMesh(eye), vr.textureBounds[i]);
-		meshFilter.mesh = hiddenAreaMeshes[i];
-	}
+		public void Set(SteamVR vr, EVREye eye) {
+			int i = (int) eye;
+			if (hiddenAreaMeshes[i] == null) { hiddenAreaMeshes[i] = SteamVR_Utils.CreateHiddenAreaMesh(vr.hmd.GetHiddenAreaMesh(eye), vr.textureBounds[i]); }
+			meshFilter.mesh = hiddenAreaMeshes[i];
+		}
 
-	public void Clear()
-	{
-		meshFilter.mesh = null;
+		public void Clear() { meshFilter.mesh = null; }
 	}
 }
-

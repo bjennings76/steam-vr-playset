@@ -7,9 +7,8 @@
 
 using System;
 using System.Runtime.InteropServices;
-using Valve.VR;
 
-namespace Valve.VR
+namespace Plugins
 {
 
 [StructLayout(LayoutKind.Sequential)]
@@ -2409,21 +2408,21 @@ public class CVRSettings
 
 public class OpenVRInterop
 {
-	[DllImportAttribute("openvr_api", EntryPoint = "VR_InitInternal")]
+	[DllImport("openvr_api", EntryPoint = "VR_InitInternal")]
 	internal static extern uint InitInternal(ref EVRInitError peError, EVRApplicationType eApplicationType);
-	[DllImportAttribute("openvr_api", EntryPoint = "VR_ShutdownInternal")]
+	[DllImport("openvr_api", EntryPoint = "VR_ShutdownInternal")]
 	internal static extern void ShutdownInternal();
-	[DllImportAttribute("openvr_api", EntryPoint = "VR_IsHmdPresent")]
+	[DllImport("openvr_api", EntryPoint = "VR_IsHmdPresent")]
 	internal static extern bool IsHmdPresent();
-	[DllImportAttribute("openvr_api", EntryPoint = "VR_IsRuntimeInstalled")]
+	[DllImport("openvr_api", EntryPoint = "VR_IsRuntimeInstalled")]
 	internal static extern bool IsRuntimeInstalled();
-	[DllImportAttribute("openvr_api", EntryPoint = "VR_GetStringForHmdError")]
+	[DllImport("openvr_api", EntryPoint = "VR_GetStringForHmdError")]
 	internal static extern IntPtr GetStringForHmdError(EVRInitError error);
-	[DllImportAttribute("openvr_api", EntryPoint = "VR_GetGenericInterface")]
+	[DllImport("openvr_api", EntryPoint = "VR_GetGenericInterface")]
 	internal static extern IntPtr GetGenericInterface([In, MarshalAs(UnmanagedType.LPStr)] string pchInterfaceVersion, ref EVRInitError peError);
-	[DllImportAttribute("openvr_api", EntryPoint = "VR_IsInterfaceVersionValid")]
+	[DllImport("openvr_api", EntryPoint = "VR_IsInterfaceVersionValid")]
 	internal static extern bool IsInterfaceVersionValid([In, MarshalAs(UnmanagedType.LPStr)] string pchInterfaceVersion);
-	[DllImportAttribute("openvr_api", EntryPoint = "VR_GetInitToken")]
+	[DllImport("openvr_api", EntryPoint = "VR_GetInitToken")]
 	internal static extern uint GetInitToken();
 }
 

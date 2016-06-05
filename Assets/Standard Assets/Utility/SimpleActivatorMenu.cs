@@ -1,7 +1,6 @@
-using System;
 using UnityEngine;
 
-namespace UnityStandardAssets.Utility
+namespace Standard_Assets.Utility
 {
     public class SimpleActivatorMenu : MonoBehaviour
     {

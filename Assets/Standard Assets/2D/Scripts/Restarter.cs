@@ -1,8 +1,7 @@
-using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace UnityStandardAssets._2D
+namespace Standard_Assets._2D.Scripts
 {
     public class Restarter : MonoBehaviour
     {

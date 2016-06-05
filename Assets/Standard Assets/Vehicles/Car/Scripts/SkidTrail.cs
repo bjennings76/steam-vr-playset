@@ -1,8 +1,7 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
-namespace UnityStandardAssets.Vehicles.Car
+namespace Standard_Assets.Vehicles.Car.Scripts
 {
     public class SkidTrail : MonoBehaviour
     {

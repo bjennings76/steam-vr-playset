@@ -1,7 +1,6 @@
-using System;
 using UnityEngine;
 
-namespace UnityStandardAssets.Cameras
+namespace Standard_Assets.Cameras.Scripts
 {
     public class LookatTarget : AbstractTargetFollower
     {
