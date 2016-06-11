@@ -167,11 +167,7 @@ public class SteamVR_PlayArea : MonoBehaviour
 		mesh.triangles = triangles;
 
 		var renderer = GetComponent<MeshRenderer>();
-#if UNITY_EDITOR
-		renderer.material = UnityEditor.AssetDatabase.GetBuiltinExtraResource<Material>("Sprites-Default.mat");
-#else
 		renderer.material = Resources.GetBuiltinResource<Material>("Sprites-Default.mat");
-#endif
 		renderer.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
 		renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
 		renderer.receiveShadows = false;
