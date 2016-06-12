@@ -16,6 +16,7 @@ namespace VRTK
     using UnityEngine;
     using System.Collections;
 
+    [RequireComponent(typeof(VRTK_InteractTouch)), RequireComponent(typeof(VRTK_ControllerEvents))]
     public class VRTK_InteractGrab : MonoBehaviour
     {
         public Rigidbody controllerAttachPoint = null;
@@ -37,6 +38,8 @@ namespace VRTK
 
         private int grabEnabledState = 0;
         private float grabPrecognitionTimer = 0f;
+        private Transform lastParent;
+        private bool wasKinematic;
 
         public virtual void OnControllerGrabInteractableObject(ObjectInteractEventArgs e)
         {
@@ -154,15 +157,28 @@ namespace VRTK
 
         private void SetControllerAsParent(GameObject obj)
         {
+            lastParent = obj.transform.parent;
             obj.transform.parent = this.transform;
-            if (obj.GetComponent<Rigidbody>())
+
+            Rigidbody rb = obj.GetComponent<Rigidbody>();
+            if (rb)
             {
-                obj.GetComponent<Rigidbody>().isKinematic = true;
+                // Save kinematic state.
+                wasKinematic = rb.isKinematic;
+                rb.isKinematic = true;
             }
         }
 
         private void CreateJoint(GameObject obj)
         {
+            // Save kinematic state.
+            Rigidbody rb = obj.GetComponent<Rigidbody>();
+            if (rb)
+            {
+                wasKinematic = rb.isKinematic;
+                rb.isKinematic = false;
+            }
+
             if (obj.GetComponent<VRTK_InteractableObject>().grabAttachMechanic == VRTK_InteractableObject.GrabAttachType.Fixed_Joint)
             {
                 controllerAttachJoint = obj.AddComponent<FixedJoint>();
@@ -180,14 +196,20 @@ namespace VRTK
 
         private Rigidbody ReleaseGrabbedObjectFromController(bool withThrow)
         {
+            Rigidbody rb;
+
             if (controllerAttachJoint != null)
             {
-                return ReleaseAttachedObjectFromController(withThrow);
+                rb = ReleaseAttachedObjectFromController(withThrow);
             }
             else
             {
-                return ReleaseParentedObjectFromController();
+                rb = ReleaseParentedObjectFromController();
             }
+
+            // Restore kinematic state
+            rb.isKinematic = wasKinematic;
+            return rb;
         }
 
         private Rigidbody ReleaseAttachedObjectFromController(bool withThrow)
@@ -209,10 +231,8 @@ namespace VRTK
 
         private Rigidbody ReleaseParentedObjectFromController()
         {
-            var rigidbody = grabbedObject.GetComponent<Rigidbody>();
-            grabbedObject.transform.parent = null;
-            rigidbody.isKinematic = false;
-            return rigidbody;
+            grabbedObject.transform.parent = lastParent;
+            return grabbedObject.GetComponent<Rigidbody>();
         }
 
         private void ThrowReleasedObject(Rigidbody rb, uint controllerIndex, float objectThrowMultiplier)
@@ -339,6 +359,15 @@ namespace VRTK
                 if (!IsObjectHoldOnGrab(interactTouch.GetTouchedObject()))
                 {
                     grabEnabledState++;
+                }
+
+                if (grabbedObject)
+                {
+                    var rumbleAmount = grabbedObject.GetComponent<VRTK_InteractableObject>().rumbleOnGrab;
+                    if (!rumbleAmount.Equals(Vector2.zero))
+                    {
+                        controllerActions.TriggerHapticPulse((int)rumbleAmount.x, (ushort)rumbleAmount.y);
+                    }
                 }
             }
             else

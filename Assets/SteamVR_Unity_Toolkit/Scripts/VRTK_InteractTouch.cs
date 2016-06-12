@@ -18,6 +18,7 @@ namespace VRTK
 
     public delegate void ObjectInteractEventHandler(object sender, ObjectInteractEventArgs e);
 
+    [RequireComponent(typeof(VRTK_ControllerActions))]
     public class VRTK_InteractTouch : MonoBehaviour
     {
 
@@ -117,9 +118,16 @@ namespace VRTK
                 OnControllerTouchInteractableObject(SetControllerInteractEvent(touchedObject));
                 touchedObject.GetComponent<VRTK_InteractableObject>().ToggleHighlight(true, globalTouchHighlightColor);
                 touchedObject.GetComponent<VRTK_InteractableObject>().StartTouching(this.gameObject);
+
                 if (controllerActions.IsControllerVisible() && hideControllerOnTouch)
                 {
                     Invoke("HideController", hideControllerDelay);
+                }
+
+                var rumbleAmount = touchedObject.GetComponent<VRTK_InteractableObject>().rumbleOnTouch;
+                if (!rumbleAmount.Equals(Vector2.zero))
+                {
+                    controllerActions.TriggerHapticPulse((int)rumbleAmount.x, (ushort)rumbleAmount.y);
                 }
             }
         }

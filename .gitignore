@@ -40,8 +40,7 @@ desktop.ini
 Thumbs.db
 
 # Temp/Cache directories
-/Assets/ImportTemp*
-/Assets/Scripts/Cache.meta
-/Assets/Scripts/Cache/
-/Assets/StreamingAssets.meta
-/Assets/StreamingAssets/
+/[Aa]ssets/[Ss]cripts/[Cc]ache.meta
+/[Aa]ssets/[Ss]cripts/[Cc]ache/
+/[Aa]ssets/[Ss]treaming[Aa]ssets.meta
+/[Aa]ssets/[Ss]treaming[Aa]ssets/

@@ -43,6 +43,7 @@ namespace VRTK
         [Header("Touch Interactions", order = 1)]
         public bool highlightOnTouch = false;
         public Color touchHighlightColor = Color.clear;
+        public Vector2 rumbleOnTouch = Vector2.zero;
 
         [Header("Grab Interactions", order = 2)]
         public bool isGrabbable = false;
@@ -53,6 +54,7 @@ namespace VRTK
         public Vector3 snapToRotation = Vector3.zero;
         public Vector3 snapToPosition = Vector3.zero;
         public Transform snapHandle;
+        public Vector2 rumbleOnGrab = Vector2.zero;
 
         [Header("Grab Mechanics", order = 3)]
         public GrabAttachType grabAttachMechanic = GrabAttachType.Fixed_Joint;
@@ -65,6 +67,7 @@ namespace VRTK
         public bool isUsable = false;
         public bool holdButtonToUse = true;
         public bool pointerActivatesUseAction = false;
+        public Vector2 rumbleOnUse = Vector2.zero;
 
         public event InteractableObjectEventHandler InteractableObjectTouched;
         public event InteractableObjectEventHandler InteractableObjectUntouched;
@@ -251,6 +254,12 @@ namespace VRTK
         protected virtual void Awake()
         {
             rb = this.GetComponent<Rigidbody>();
+
+            // If there is no rigid body, add one and set it to 'kinematic'.
+            if (!rb) {
+                rb = gameObject.AddComponent<Rigidbody>();
+                rb.isKinematic = true;
+            }
         }
 
         protected virtual void Start()
