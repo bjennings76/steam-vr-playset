@@ -9,15 +9,12 @@
 //
 //====================================================================================
 
-using JetBrains.Annotations;
-
 namespace VRTK
 {
     using UnityEngine;
     using System.Collections;
 
     public delegate void TeleportEventHandler(object sender, DestinationMarkerEventArgs e);
-
 
     public class VRTK_BasicTeleport : MonoBehaviour
     {
@@ -39,12 +36,12 @@ namespace VRTK
         private float maxBlinkTransitionSpeed = 1.5f;
         private float maxBlinkDistance = 33f;
 
-        private void OnTeleporting(DestinationMarkerEventArgs e) {
+        protected void OnTeleporting(object sender, DestinationMarkerEventArgs e) {
             if (Teleporting != null)
                 Teleporting(this, e);
         }
 
-        private void OnTeleported(DestinationMarkerEventArgs e) {
+        protected void OnTeleported(object sender, DestinationMarkerEventArgs e) {
             if (Teleported != null)
                 Teleported(this, e);
         }
@@ -92,12 +89,12 @@ namespace VRTK
         {
             if (enableTeleport && ValidLocation(e.target) && e.enableTeleport)
             {
-                OnTeleporting(e);
+                OnTeleporting(sender, e);
                 Vector3 newPosition = GetNewPosition(e.destinationPosition, e.target);
                 CalculateBlinkDelay(blinkTransitionSpeed, newPosition);
                 Blink(blinkTransitionSpeed);
                 SetNewPosition(newPosition, e.target);
-                OnTeleported(e);
+                OnTeleported(sender, e);
             }
         }
 
@@ -135,7 +132,6 @@ namespace VRTK
             }
         }
 
-        [UsedImplicitly]
         private void ReleaseBlink()
         {
             SteamVR_Fade.Start(Color.clear, fadeInTime);
